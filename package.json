@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "tsc --watch *.js --target ES5"
+    "start": "tsc *.ts --watch --target ES5"
   },
   "repository": {
     "type": "git",
