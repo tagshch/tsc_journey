@@ -1,0 +1,24 @@
+{
+  "name": "tsc_journey",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "tsc --watch *.js --target ES5"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tagshch/tsc_journey.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/tagshch/tsc_journey/issues"
+  },
+  "homepage": "https://github.com/tagshch/tsc_journey#readme",
+  "dependencies": {
+    "tsc": "^1.20150623.0"
+  }
+}
