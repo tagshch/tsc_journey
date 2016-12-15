@@ -2,10 +2,10 @@
   "name": "tsc_journey",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "tsconfig.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "tsc *.ts --watch --target ES5"
+    "build": "tsc; node dist/index.js",
+    "serve": "tsc --watch"
   },
   "repository": {
     "type": "git",
@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/tagshch/tsc_journey#readme",
   "dependencies": {
-    "tsc": "^1.20150623.0"
+    "@types/node": "^6.0.52",
+    "typescript": "^2.1.4"
   }
 }
