@@ -4,7 +4,8 @@
   "description": "",
   "main": "tsconfig.js",
   "scripts": {
-    "build": "tsc; node dist/index.js",
+    "start": "tsc",
+    "build": "tsc; node dist/interfaces.js",
     "serve": "tsc --watch"
   },
   "repository": {

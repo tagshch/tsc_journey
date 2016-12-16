@@ -54,16 +54,17 @@ console.log('\n------------\n');
 
 
 /*============ ENUM ============ */
-enum Color_1 {Red, Green, Blue};
-let a: Color_1 = Color_1.Green;
+{
+	enum Color_1 {Red, Green, Blue};
+	let a: Color_1 = Color_1.Green;
 
-enum Color_2 {Red=1, Green=2, Blue=4};
-let b: Color_2 = Color_2.Green;
+	enum Color_2 {Red=1, Green=2, Blue=4};
+	let b: Color_2 = Color_2.Green;
 
-let colorName: string = Color_1[2];
-console.log(colorName);
-console.log('\n------------\n');
-
+	let colorName: string = Color_1[2];
+	console.log(colorName);
+	console.log('\n------------\n');
+}
 
 /*============ ANY ============ */
 let notSure: any = 4;
@@ -85,6 +86,7 @@ console.log('\n------------\n');
 let list: any[] = [1, true, 'free'];
 list[1] = 100;
 console.log(list);
+console.log('\n------------\n');
 
 
 /*============ VOID ============ */
@@ -117,6 +119,7 @@ function infiniteLoop(): never{
 let someValue: any = "this is a string";
 let strLength_1: number = (<string>someValue).length;
 let strLength_2: number = (someValue as string).length;
+
 
 
 
