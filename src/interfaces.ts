@@ -82,6 +82,7 @@ a = ro; // error!
 
 // --- NB - variables can be const, but properties can be readonly ---
 
+console.log('\n=====================\n');
 
 
 /* ===========  EXCESS PROPERTY CHECKS =========== */
@@ -125,6 +126,7 @@ interface SquareConfig3 {
 let squareOptions = { colour: "red", width: 33 };
 let mySquare4 = createSquare2(squareOptions);
 console.log('mySquare4:', mySquare4);
+console.log('\n=====================\n');
 
 
 
@@ -157,6 +159,8 @@ console.log(
 	mySearch2('aaaaaacaraaaaaa', 'car'),
 	mySearch3('aaaaaacaraaaaaa', 'car')
 );
+
+console.log('\n=====================\n');
 
 
 /* ===========  INDEXABLE TYPES =========== */
@@ -195,6 +199,8 @@ let myArray2: ReadonlyStringArray = ["Alice", "Bob"];
 //myArray2[2] = "Mallory"; // error!
 //console.log(myArray2);
 
+console.log('\n=====================\n');
+
 
 /* ===========  CLASS TYPES =========== */
 
@@ -216,3 +222,74 @@ class Clock implements ClockInterface {
 
 let Cl = new Clock(10, 30);
 Cl.getTime();
+
+
+interface ClockInterface2 {
+	currentTime: Date;
+	setTime(d: Date);
+}
+
+class Clock2 implements ClockInterface2{
+	currentTime: Date;
+	setTime(d: Date){
+		this.currentTime = d;
+	}
+	constructor(h: number, m: number){ }
+}
+
+let Cl2 = new Clock2(10, 30);
+
+Cl2.setTime(new Date());
+console.log(Cl2.currentTime.toLocaleString('ru'), '\n');
+
+
+// === Difference between the static and instance sides of classe ===
+
+interface CarConstructor{
+	new (horses: number, price: number):  CarInterface;
+}
+interface CarInterface{
+	tick();
+}
+
+function createCar(ctor: CarConstructor, horses: number, price: number): CarInterface{
+	return new ctor(horses, price);
+}
+
+class ElectoCar implements CarInterface{
+	constructor(h: number, p: number){ }
+	tick(){
+		console.log('Beep Beep');
+	}
+}
+
+class AutoCar implements CarInterface{
+	constructor(h: number, p: number){ }
+	tick(){
+		console.log('Boo Boo');
+	}
+}
+
+let electro = createCar(ElectoCar, 120, 60000);
+let auto = createCar(AutoCar, 160, 30000);
+
+electro.tick();
+auto.tick();
+
+console.log(
+	electro,
+	auto
+);
+
+console.log('\n=====================\n');
+
+
+/* ===========  Extending Interfaces =========== */
+
+/* ===========  Hybrid Types =========== */
+
+/* ===========  Interfaces Extending Classes =========== */
+
+
+
+
