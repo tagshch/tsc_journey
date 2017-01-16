@@ -26,6 +26,9 @@ console.log('\n=====================\n');
 
 
 /* ===========  OPTIONAL PROPERTIES =========== */
+
+// --- Question mark '?' - means that this property is optional ---
+
 interface SquareConfig{
 	color?: string;
 	width?: number;
@@ -55,7 +58,7 @@ console.log('\n=====================\n');
 
 /* ===========  READONLY PROPERTIES =========== */
 
-//After the assignment, x and y can’t be changed.
+// --- After the assignment, x and y can’t be changed. ---
 interface Point{
 	readonly x: number;
 	readonly y: number;
@@ -63,3 +66,153 @@ interface Point{
 
 let p1: Point = { x: 10, y: 20};
 // p1.x = 10; //error!
+
+// --- Readonly array ---
+let a: number[] = [1,2,3,4];
+let ro: ReadonlyArray<number> = a;
+
+console.log(ro);
+
+/*
+ro[0] = 10; // error!
+ro.push(15); // error!
+ro.length = 100; // error!
+a = ro; // error!
+*/
+
+// --- NB - variables can be const, but properties can be readonly ---
+
+
+
+/* ===========  EXCESS PROPERTY CHECKS =========== */
+
+
+interface SquareConfig2 {
+    color?: string;
+    width?: number;
+}
+
+function createSquare2(config: SquareConfig2): { color: string; area: number } {
+	let newSquare = {
+		color:"",
+		area:0
+	};
+
+	console.log('Config:', config);
+
+	if(config.color){
+		newSquare.color = config.color;
+	}
+	if(config.width){
+		newSquare.area = config.width * config.width;
+	}
+	return newSquare;
+}
+
+// let mySquare2 = createSquare2({ colour: "red", width: 20 });
+// console.log('mySquare2:', mySquare2);
+
+let mySquare3 = createSquare2({ width: 50, opacity: 0.5 } as SquareConfig2);
+console.log('mySquare3:', mySquare3);
+
+
+interface SquareConfig3 {
+	color?: string;
+	width?: number;
+	[propName: string]: any;
+}
+
+let squareOptions = { colour: "red", width: 33 };
+let mySquare4 = createSquare2(squareOptions);
+console.log('mySquare4:', mySquare4);
+
+
+
+/* ===========  FUNCTION TYPES =========== */
+interface SearchFunc {
+	(source: string, subString: string): boolean;
+}
+
+let mySearch: SearchFunc;
+mySearch = function(source: string, subString: string){
+	let result = source.search(subString);
+	// if(result > -1) return 'BONGO'; // get error, because not boolean!
+	return result > -1;
+}
+
+// --- optimizied code (we can change titles of args) ---
+let mySearch2: SearchFunc = function(src: string, sub: string): boolean{
+	let result = src.search(sub);
+	return result > -1;
+};
+
+let mySearch3: SearchFunc = function(src, sub) {
+    let result = src.search(sub);
+    return result > -1;
+}
+
+console.log(
+	'mySearch:',
+	mySearch('aaaaaacaraaaaaa', 'car'),
+	mySearch2('aaaaaacaraaaaaa', 'car'),
+	mySearch3('aaaaaacaraaaaaa', 'car')
+);
+
+
+/* ===========  INDEXABLE TYPES =========== */
+
+interface keyByNumber {
+	[index:number] : string;
+}
+
+let myArray: keyByNumber = ['Bob', 'Fred'];
+let myStr: string = myArray[0];
+
+console.log(myStr, myArray);
+
+
+/*
+class Animal {
+    name: string;
+}
+class Dog extends Animal {
+    breed: string;
+}
+
+// Error: indexing with a 'string' will sometimes get you a Dog!
+interface NotOkay {
+    [x: number]: Animal;
+    [x: string]: Dog;
+}
+*/
+
+// --- Readonly array ---
+interface ReadonlyStringArray {
+    readonly [index: number]: string;
+}
+let myArray2: ReadonlyStringArray = ["Alice", "Bob"];
+
+//myArray2[2] = "Mallory"; // error!
+//console.log(myArray2);
+
+
+/* ===========  CLASS TYPES =========== */
+
+interface ClockInterface {
+    currentTime: Date;
+}
+
+class Clock implements ClockInterface {
+    currentTime: Date;
+    constructor(h: number, m: number) {
+    	this.currentTime = new Date();
+    	this.currentTime.setHours(h);
+    	this.currentTime.setMinutes(m);
+    }
+    getTime(){ 
+    	console.log(this.currentTime.toLocaleString('ru')); 
+    }
+}
+
+let Cl = new Clock(10, 30);
+Cl.getTime();
