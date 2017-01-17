@@ -286,10 +286,90 @@ console.log('\n=====================\n');
 
 /* ===========  Extending Interfaces =========== */
 
+interface Shape{
+	color: string;
+}
+
+interface PenStroke{
+	penWidth: number;
+}
+
+interface Square extends Shape, PenStroke{
+	sideLength: number;
+}
+
+let sqr = <Square>{};
+
+sqr.color = 'blue';
+sqr.sideLength = 20;
+sqr.penWidth = 100;
+
+console.log(sqr);
+
+console.log('\n=====================\n');
+
+
 /* ===========  Hybrid Types =========== */
+
+interface Counter{
+	(start: number): string;
+	interval: number;
+	reset():void;
+}
+
+function getCounter():Counter{
+	let counter = <Counter>function(start:number){
+		this.interval = start;
+	};
+	counter.interval = 123;
+	counter.reset = function(){
+		console.log('Reset:', this.interval);
+	};
+	return counter;
+}
+
+let cn = getCounter();
+
+cn(10);
+cn.reset();
+cn.interval = 5.0;
+console.log(cn);
+
+
 
 /* ===========  Interfaces Extending Classes =========== */
 
+class Control{ 
+	private state: any;
+}
+
+interface SelectableControl extends Control{
+	select(): void;
+}
+
+class TextBox extends Control{ 
+	select(){}
+}
+
+class ImageCustom{
+	select(){}
+}
+
+function runControl(control:SelectableControl){
+	control.select();
+}
+
+let slc1 = new TextBox();
+let slc2 = new ImageCustom();
 
 
+/* --- 
+Since state is a private member it is only possible for descendants
+ of Control to implement SelectableControl.
+This is because only descendants of Control will have a state private member 
+that originates in the same declaration, 
+which is a requirement for private members to be compatible.
+ --- */
 
+runControl(slc1);
+//runControl(slc2); // error! Not have state from control!
