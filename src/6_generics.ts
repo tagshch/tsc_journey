@@ -38,9 +38,47 @@ function findout<T>(arg: T):T
 
 function loggingFindout<T>(arg: T): T
 {
-	console.log(arg.length); // Error: T doesn't have .length
+	//console.log(arg.length); // Error: T doesn't have .length
 	return arg;
 }
 
+/* --- 
+When we do, the compiler will give us an error that we’re using the .length member of arg, 
+but nowhere have we said that arg has this member. 
 
+Remember, we said earlier that these type variables stand in for any and all types, 
+so someone using this function could have passed in a number instead, 
+which does not have a .length member.
+
+Let’s say that we’ve actually intended this function to work on arrays of T 
+rather than T directly. Since we’re working with arrays, 
+the .length member should be available. We can describe this just 
+like we would create arrays of other types:
+--- */
+
+function loggingIdentity<T>(arg: T[]): T[]
+{
+	console.log(arg.length); // Array has a .length, so no more error
+	return arg;
+}
+
+/* --- 
+You can read the type of loggingIdentity as 
+“the generic function loggingIdentity takes a type parameter T, 
+and an argument arg which is an array of Ts, and returns an array of Ts.” 
+
+If we passed in an array of numbers, we’d get an array of numbers back out, 
+as T would bind to number. 
+
+This allows us to use our generic type variable T as part of 
+the types we’re working with, rather than the whole type, 
+giving us greater flexibility.
+--- */
+
+function logIdentity<T>(arg: Array<T>): Array<T> {
+	console.log(arg.length); // Array has a .length, so no more error
+	return arg;
+}
+
+/* ======== GENERIC TYPES ======== */
 
