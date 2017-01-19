@@ -221,12 +221,11 @@ let pickedCard = cardPicker();
 
 console.log("card: " + pickedCard.card + " of " + pickedCard.suit + '\n');
 
-// --- simple of above ---
 
 let bingo = {
 	getBingo:function(this:void){
 		return () =>{
-			console.log('BINGO!', this);
+			console.log('this of bingo:', this);
 		}
 	}	
 };
@@ -237,12 +236,111 @@ bongo();
 
 // --- this parameters in callbacks ---
 
+interface UIElement{
+	addClickListener(onclick:(this:void, e:Event) => void): void;
+}
+
+/* ---
+this: void means that addClickListener expects onclick to 
+be a function that does not require a this type.
+Second, annotate your calling code with this
+--- */
+
+class Handler1{
+	info: string;
+	onClickBad(this:Handler, e:Event){
+		// Crash! Using this callback would crash at runtime
+		this.info = e.message;
+	}
+}
+
+/* ---
+With this annotated, you make it explicit that onClickBad must 
+be called on an instance of Handler. 
+Then TypeScript will detect that addClickListener requires a function that has this: void. 
+To fix the error, change the type of this:
+--- */
+
+class Handler2 {
+	info: string;
+	onClickGood(this:void, e:Event){
+        // can't use this here because it's of type void!
+		this.info = e.message;
+		console.log('clicked!');
+	}
+}
+
+/* ---
+Because onClickGood specifies its this type as void, it is legal to pass to addClickListener. 
+Of course, this also means that it can’t use this.info. 
+If you want both then you’ll have to use an arrow function:
+--- */
+
+class Handler {
+    info: string;
+    onClickGood = (e: Event) => { this.info = e.message }
+}
+
+/* --- 
+This works because arrow functions don’t capture this, so you can always pass them to something 
+that expects this: void. The downside is that one arrow function 
+is created per object of type Handler. 
+Methods, on the other hand, are only created once and attached to Handler’s prototype. 
+They are shared between all objects of type Handler.
+--- */
 
 
 console.log('\n==================\n');
 
 /* ======== OVERLOADS ======== */
 
+let suits = ["hearts", "spades", "clubs", "diamonds"];
+
+function pickCard(x: {suit: string; card: number; }[]): number;
+
+function pickCard(x: number): { suit: string; card: number; };
+
+function pickCard(x):any{
+	// Check to see if we're working with an object/array
+    // if so, they gave us the deck and we'll pick the card
+	if(typeof x == 'object'){
+		let pickedCard = Math.floor(Math.random() * x.length);
+		return pickedCard;
+	}
+	else if (typeof x == "number"){
+		let pickedSuit = Math.floor(x / 13);
+		return { suit: suits[pickedSuit], card: x % 13 };
+	}
+}
+
+let myDeck = [{ suit: "diamonds", card: 2},{ suit: "club", card: 4},{ suit:"hearts", card: 10 }];
+
+let my_card = myDeck[pickCard(myDeck)];
+console.log(my_card);
+
+let my_card_2 = pickCard(15);
+console.log(my_card_2)
+
+// --- plain example ---
+
+function getSmth(x:number): number;
+
+function getSmth(x:string): string;
+
+function getSmth(x):any{
+	if(typeof x == "number"){
+		console.log("X is a number:", x);
+		return x + x;
+	}
+	else if(typeof x == "string"){
+		console.log("X is a string:", x);
+		return x + " " + x;
+	}
+}
+
+console.log();
+getSmth(15);
+getSmth("BINGO!");
 
 console.log('\n==================\n');
 
