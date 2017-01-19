@@ -250,7 +250,7 @@ class Handler1{
 	info: string;
 	onClickBad(this:Handler, e:Event){
 		// Crash! Using this callback would crash at runtime
-		this.info = e.message;
+		//this.info = e.message;
 	}
 }
 
@@ -265,7 +265,7 @@ class Handler2 {
 	info: string;
 	onClickGood(this:void, e:Event){
         // can't use this here because it's of type void!
-		this.info = e.message;
+		//this.info = e.message;
 		console.log('clicked!');
 	}
 }
@@ -278,7 +278,9 @@ If you want both then you’ll have to use an arrow function:
 
 class Handler {
     info: string;
-    onClickGood = (e: Event) => { this.info = e.message }
+    onClickGood = (e: Event) => { 
+    	//this.info = e.message 
+    }
 }
 
 /* --- 
