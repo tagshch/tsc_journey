@@ -82,3 +82,44 @@ function logIdentity<T>(arg: Array<T>): Array<T> {
 
 /* ======== GENERIC TYPES ======== */
 
+function getinfo<T>(arg: T): T
+{
+	return arg;
+}
+
+let myInfo1: <T>(arg: T) => T = getinfo;
+
+let myInfo2: <U>(arg: U) => U = getinfo;
+
+let myInfo3: {<T>(arg: T): T} = getinfo;
+
+/* --- first generic interface --- */
+
+interface GenericIdentityFn1
+{
+	<T>(arg: T): T;
+}
+
+function identification1<T>(arg: T): T
+{
+	return arg;
+}
+
+interface GenericIdentityFn2<T>
+{
+	(arg: T): T;
+}
+
+function identification2<T>(arg: T): T
+{
+	return arg;
+}
+
+let myInfo4: GenericIdentityFn2<number> = identification2;
+
+
+/* ======== GENERIC CLASSES ======== */
+/* ======== GENERIC CONSTRAINTS ======== */
+
+
+
