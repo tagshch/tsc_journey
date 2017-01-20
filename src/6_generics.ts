@@ -1,6 +1,18 @@
 
 /* ======== GENERICS ======== */
 
+/* --- ОПРЕДЕЛЕНИЕ ---
+
+Обобщения - это параметризованные типы. 
+
+С их помощью можно объявлять классы, интерфейсы и методы, 
+где тип данных указан в виде параметра. 
+
+Обобщения добавили в язык безопасность типов.
+
+--- */
+
+
 function identity<T>(arg: T): T{
 	return arg;
 }
@@ -117,6 +129,9 @@ function identification2<T>(arg: T): T
 
 let myInfo4: GenericIdentityFn2<number> = identification2;
 
+console.log(
+	myInfo4(123)
+);
 
 /* ======== GENERIC CLASSES ======== */
 /* ======== GENERIC CONSTRAINTS ======== */
