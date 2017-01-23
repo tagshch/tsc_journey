@@ -12,7 +12,6 @@
 
 --- */
 
-
 function identity<T>(arg: T): T{
 	return arg;
 }
@@ -26,6 +25,8 @@ the same type is used for the argument and the return type.
 
 This allows us to traffic that type information in one side of the function and out the other.
 --- */
+
+console.log();
 
 let output_1 = identity<string>("MyString"); // type of output will be 'string'
 console.log(output_1);
@@ -129,12 +130,120 @@ function identification2<T>(arg: T): T
 
 let myInfo4: GenericIdentityFn2<number> = identification2;
 
+/*
+Notice that our example has changed to be something slightly different. 
+
+Instead of describing a generic function, we now have a non-generic function 
+signature that is a part of a generic type. When we use GenericIdentityFn, 
+
+we now will also need to specify the corresponding type argument (here: number), 
+effectively locking in what the underlying call signature will use. 
+
+Understanding when to put the type parameter directly on the call signature and when to 
+put it on the interface itself will be helpful in describing what aspects of a type are generic.
+
+*/
+
 console.log(
-	myInfo4(123)
+	myInfo4(12345)
 );
 
+console.log();
+
+
 /* ======== GENERIC CLASSES ======== */
+
+class GenericNumber<T>{
+	zeroValue: T;
+	add: (x : T, y: T) => T;
+}
+
+let myGenericNumber = new GenericNumber<number>();
+myGenericNumber.zeroValue = 0;
+myGenericNumber.add = function(x, y){ return x + y; };
+
+let stringNumeric = new GenericNumber<string>();
+stringNumeric.zeroValue = "";
+stringNumeric.add = function(x, y){ return x + y; };
+
+console.log(
+	stringNumeric.add(stringNumeric.zeroValue, 'test')
+);
+
+/*
+Just as with interface, putting the type parameter on the class itself
+ lets us make sure all of the properties of the class are working with the same type.
+*/
+
+
+console.log();
+
+
 /* ======== GENERIC CONSTRAINTS ======== */
 
+function logInfo<T>(arg: T): T{
+	//console.log(arg.length); // Error: T doesn't have .length
+	return arg;
+}
+
+// lets add interface to our generic
+
+interface Lengthwise {
+	length: number;
+}
+
+function logInfoOpt<T extends Lengthwise>(arg: T): T {
+	console.log(arg.length); //// Now we know it has a .length property, so no more err
+	return arg;
+}
+
+/*
+Because the generic function is now constrained, 
+it will no longer work over any and all types:
+*/
+
+//logInfoOpt(3);  // Error, number doesn't have a .length property
+
+/*
+Instead, we need to pass in values whose type has all the required properties:
+*/
+
+logInfoOpt({length: 10, value: 3});
+
+
+// ---- Using Type Parameters in Generic Constraints ----
+
+function create<T>(c : { new(): T; }) : T {
+	return new c();
+}
+
+class BeeKeeper {
+    hasMask: boolean;
+}
+
+class ZooKeeper {
+    nametag: string;
+}
+
+class Animals {
+    numLegs: number;
+}
+
+class Bee extends Animals {
+    keeper: BeeKeeper;
+}
+
+class Lion extends Animals {
+    keeper: ZooKeeper;
+}
+
+function findKeeper<A extends Animals, K> (a: {new(): A;
+    prototype: {keeper: K}}): K {
+
+    return a.prototype.keeper;
+}
+
+findKeeper(Lion).nametag; // typechecks!
+findKeeper(Bee).hasMask; // typechecks!
 
 
