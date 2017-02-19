@@ -13,6 +13,7 @@ setting parameter default values, and determining function return types.
 
 /*
 When a type inference is made from several expressions, 
+<<<<<<< HEAD
 the types of those expressions are used to calculate a “best common type”.
 */
 
@@ -22,7 +23,6 @@ let ti_y = [0, 1, null];
 
 
 /* ===== CONTEXTUAL TYPE ===== */
-
 
 
 
