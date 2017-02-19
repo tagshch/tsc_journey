@@ -107,13 +107,15 @@ console.log(directions);
 Ambient enums are used to describe the shape of already existing enum types.
 */
 
-declare enum letterEnum{ //see above "letterEnum"
+enum someEnum { X=10, Y=20, Z=30}
+
+declare enum someEnum{
 	A = 1,
 	B,
 	C = 2
 }
 
-console.log(letterEnum.A, letterEnum.B);
+console.log(someEnum);
 
 /*
 One important difference between ambient and non-ambient enums is that, 
